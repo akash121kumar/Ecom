@@ -13,10 +13,11 @@ def register(request):
             form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account created successfully for {username}!.Now you can login to your account')
-            return redirect('register')
+            return redirect('login')
+
     else:
         form = UserRegisterForm()
-        return render(request,'Users/register.html',{'form': form})
+    return render(request,'Users/register.html',{'form': form})
 
 def login_view(request):
     if request.method:
@@ -28,10 +29,10 @@ def login_view(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    messages.success(request,f'Logged In successfully for {user.username}!.')
+                    messages.success(request,f'Logged In successfully as {user.username}!')
                     return redirect('home')
                 else:
-                    messages.warning(request, f'{user.username} is not active!.')
+                    messages.warning(request, f'Account is not active!.')
                     return redirect('login')
             else:
                 messages.warning(request,'Username or password did not matched')
